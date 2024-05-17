@@ -1,0 +1,64 @@
+﻿@model List<Car>
+@if (TempData["Succeed"] != null)
+{
+    <h2>@TempData["Succeed"]</h2>
+}
+<div class="container">
+    <div class="row pt-3 pb-4">
+        <h1>Cars</h1>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Car Model
+                </th>
+                <th>
+                    Car Brand
+                </th>
+                <th>
+                    About Car
+                </th>
+                <th>
+                    Car Km
+                </th>
+                <th>
+                    Car Price
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Model)
+            {
+                <tr>
+                    <td>
+                        @car.Car_Name
+                    </td>
+                    <td>
+                        @car.Car_About
+                    </td>
+                    <td>
+                        @car.Car_Km
+                    </td>
+                    <td>
+                        @car.Car_Price
+                    </td>
+
+                    <td><a asp-controller="Car" asp-route-id="@car.Id" asp-action="Delete" class="btn btn-danger">DELETE</a></td>
+                    <td><a asp-controller="Car" asp-route-id="@car.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row pt-3 pb-2">
+        <div>
+            <a asp-controller="Car" asp-action="AddUpdate" class="btn btn-warning" type="button">
+                Add New Car
+            </a>
+        </div>
+    </div>
+</div>

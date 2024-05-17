@@ -1,0 +1,21 @@
+﻿@model CarBrands
+@if (TempData["Succeed"] != null)
+{
+    <h2>@TempData["Succeed"]</h2>
+}
+<form method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-5">
+
+        <div class="row pb-3">
+            <h1 class="text-warning">Delete Brand</h1><hr />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Brand_Name">Brand Name</label>
+            <input asp-for="Brand_Name" disabled type="text" class="form-control" />        </div>
+
+        <button type="submit" class="btn btn-outline-warning">Delete Brand</button>
+        <a asp-controller="CarBrands" asp-action="Index" class="btn btn-outline-warning">Back</a>
+    </div>
+</form>
