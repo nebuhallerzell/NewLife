@@ -29,9 +29,6 @@ namespace NewLife.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CarBrandId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CarImgUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -53,27 +50,7 @@ namespace NewLife.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarBrandId");
-
                     b.ToTable("Car");
-                });
-
-            modelBuilder.Entity("NewLife.Models.CarBrands", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Brand_Name")
-                        .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("nvarchar(35)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Car_Brand");
                 });
 
             modelBuilder.Entity("NewLife.Models.User", b =>
@@ -108,23 +85,11 @@ namespace NewLife.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("NewLife.Models.Car", b =>
-                {
-                    b.HasOne("NewLife.Models.CarBrands", "CarBrands")
-                        .WithMany()
-                        .HasForeignKey("CarBrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CarBrands");
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,6 @@ namespace NewLife.Models
         {
             _uygulamaDbContext = uygulamaDbContext;
             this.dbSet = _uygulamaDbContext.Set<T>();
-            _uygulamaDbContext.Car.Include(k => k.CarBrands).Include(k => k.CarBrandId);
-
         }
         public void Add(T entity)
         {

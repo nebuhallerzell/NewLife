@@ -1,5 +1,4 @@
 ﻿@model Car
-
 <form method="post" enctype="multipart/form-data">
     <input asp-for="CarImgUrl" hidden />
     <div class="row">
@@ -16,9 +15,8 @@
                     <span asp-validation-for="Car_Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CarBrandId">Car Brand</label>
-                    <select asp-for="CarBrandId" asp-items="ViewBag.CarBrandsList" class="form-select">
-                    </select>
+                    <label asp-for="Car_Price">Car Price</label>
+                    <select ></select>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Car_About">About Car </label>
@@ -29,6 +27,11 @@
                     <label asp-for="Car_Price">Car Price</label>
                     <input asp-for="Car_Price" type="text" class="form-control" />
                     <span asp-validation-for="Car_Price" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Car_Km">Car Km</label>
+                    <input asp-for="Car_Km" type="text" class="form-control" />
+                    <span asp-validation-for="Car_Km" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="CarImgUrl">Car İmage</label>

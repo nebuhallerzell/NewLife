@@ -2,10 +2,10 @@
 
 namespace NewLife.Models
 {
-    public class CarBrandsRepository : Repository<CarBrands>, ICarBrandsRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private readonly UygulamaDbContext _uygulamaDbContext;
-        public CarBrandsRepository(UygulamaDbContext uygulamaDbContext) : base(uygulamaDbContext)
+        public UserRepository(UygulamaDbContext uygulamaDbContext) : base(uygulamaDbContext)
         {
             _uygulamaDbContext = uygulamaDbContext;
         }
@@ -15,9 +15,9 @@ namespace NewLife.Models
             _uygulamaDbContext.SaveChanges();
         }
 
-        public void Update(CarBrands carBrand)
+        public void Update(User user)
         {
-            _uygulamaDbContext.Update(carBrand);
+            _uygulamaDbContext.Update(user);
         }
     }
 }

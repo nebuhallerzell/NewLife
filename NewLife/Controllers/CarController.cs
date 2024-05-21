@@ -2,40 +2,28 @@
 using NewLife.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace McqueenRentCarDB.Controllers
+namespace NewLife.Controllers
 {
     public class CarController : Controller
     {
         private readonly ICarRepository _carRepository;
-        private readonly ICarBrandsRepository _carBrandRepository;
         public readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CarController(ICarRepository carRepository, ICarBrandsRepository carBrandRepository, IWebHostEnvironment webHostEnvironment)
+        public CarController(ICarRepository carRepository,IWebHostEnvironment webHostEnvironment)
         {
             _carRepository = carRepository;
-            _carBrandRepository = carBrandRepository;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            //List<Car> objCarList = _carRepository.GetAll().ToList();
-            List<Car> objCarList = _carRepository.GetAll(includeProps:"CarBrands").ToList();
+            List<Car> objCarList = _carRepository.GetAll().ToList();
             return View(objCarList);
         }
 
         public IActionResult AddUpdate(int? id)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
-
-            IEnumerable<SelectListItem> CarBrandsList = _carBrandRepository.GetAll().Select(k => new SelectListItem
-            {
-                Text = k.Brand_Name,
-                Value = k.Id.ToString()
-            });
-            ViewBag.CarBrandsList = CarBrandsList;
-
             if(id == null || id==0)
             {
                 return View();

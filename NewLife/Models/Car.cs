@@ -23,12 +23,5 @@ namespace NewLife.Models
         [ValidateNever]
         public string? CarImgUrl { get; set; }
 
-        [ValidateNever]
-        public int CarBrandId { get; set; }
-
-        [ForeignKey("CarBrandId")]
-        [ValidateNever]
-        public CarBrands? CarBrands { get; set; }
-
     }
 }

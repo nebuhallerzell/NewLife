@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewLife.Models;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ namespace NewLife.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize(Policy ="UserPolicy")]
         public IActionResult Index()
         {
             return View();

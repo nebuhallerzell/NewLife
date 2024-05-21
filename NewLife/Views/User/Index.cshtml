@@ -1,0 +1,63 @@
+﻿@model List<User>
+<div class="container">
+    <div class="row pt-3 pb-4">
+        <h1>Users</h1>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    User NAME
+                </th>
+                <th>
+                    User Surname
+                </th>
+                <th>
+                    User Mail
+                </th>
+                <th>
+                    User Number
+                </th>
+                <th>
+                    User Type
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>
+                        @user.User_Name
+                    </td>
+                    <td>
+                        @user.User_Surname
+                    </td>
+                    <td>
+                        @user.User_Email
+                    </td>
+                    <td>
+                        @user.User_Phone
+                    </td>
+                    <td>
+                        @user.User_Type
+                    </td>
+
+                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger">DELETE</a></td>
+                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row pt-3 pb-2">
+        <div>
+            <a asp-controller="User" asp-action="AddUpdate" class="btn btn-warning" type="button">
+                Add New User
+            </a>
+        </div>
+    </div>
+</div>
