@@ -124,5 +124,58 @@ namespace NewLife.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult AddUpdate(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return View(new User());
+            }
+
+            // Update
+            User? userDb = _userRepository.Get(u => u.Id == id);
+            if (userDb == null)
+            {
+                return NotFound();
+            }
+            return View(userDb);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUpdate(int id, IFormCollection formCollection)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            // Yeni kullanıcı ekleme
+            if (id == 0)
+            {
+                User newUser = new User();
+                if (await TryUpdateModelAsync(newUser))
+                {
+                    _userRepository.Add(newUser);
+                    TempData["Succeed"] = "User added successfully";
+                    _userRepository.Save();
+                    return RedirectToAction("Index", "User");
+                }
+            }
+            // Mevcut kullanıcıyı güncelleme
+            else
+            {
+                User? userDb = _userRepository.Get(u => u.Id == id);
+                if (userDb == null)
+                {
+                    return NotFound();
+                }
+                if (await TryUpdateModelAsync(userDb))
+                {
+                    _userRepository.Update(userDb);
+                    TempData["Succeed"] = "User updated successfully";
+                    _userRepository.Save();
+                    return RedirectToAction("Index", "User");
+                }
+            }
+            return View();
+        }
+
+
     }
 }
