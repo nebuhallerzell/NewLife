@@ -126,38 +126,13 @@ namespace NewLife.Controllers
 
         public IActionResult AddUpdate(int? id)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (id == null || id == 0)
             {
-                return View(new User());
+                return View();
             }
 
             // Update
-            User? userDb = _userRepository.Get(u => u.Id == id);
-            if (userDb == null)
-            {
-                return NotFound();
-            }
-            return View(userDb);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddUpdate(int id, IFormCollection formCollection)
-        {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-
-            // Yeni kullanıcı ekleme
-            if (id == 0)
-            {
-                User newUser = new User();
-                if (await TryUpdateModelAsync(newUser))
-                {
-                    _userRepository.Add(newUser);
-                    TempData["Succeed"] = "User added successfully";
-                    _userRepository.Save();
-                    return RedirectToAction("Index", "User");
-                }
-            }
-            // Mevcut kullanıcıyı güncelleme
             else
             {
                 User? userDb = _userRepository.Get(u => u.Id == id);
@@ -165,17 +140,44 @@ namespace NewLife.Controllers
                 {
                     return NotFound();
                 }
-                if (await TryUpdateModelAsync(userDb))
-                {
-                    _userRepository.Update(userDb);
-                    TempData["Succeed"] = "User updated successfully";
-                    _userRepository.Save();
-                    return RedirectToAction("Index", "User");
-                }
+                return View(userDb);
             }
-            return View();
         }
 
+        [HttpPost]
+        public IActionResult AddUpdate(User user)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (ModelState.IsValid)
+            {
+                if (user.Id == 0)
+                {
+                    _userRepository.Add(user);
+                    TempData["Succeed"] = "User added successfully";
+                }
+                else
+                {
+                    User? userDb = _userRepository.Get(u => u.Id == user.Id);
+                    if (userDb == null)
+                    {
+                        return NotFound();
+                    }
+
+                    userDb.User_Name = user.User_Name;
+                    userDb.User_Email = user.User_Email;
+                    userDb.User_Surname = user.User_Surname;
+                    userDb.User_Password = user.User_Password;
+                    userDb.User_Phone = user.User_Phone;
+                    user.User_Adress = user.User_Adress;    
+
+                    _userRepository.Update(userDb);
+                    TempData["Succeed"] = "User updated successfully";
+                }
+                _userRepository.Save();
+                return RedirectToAction("Index", "User");
+            }
+            return View(user);
+        }
 
     }
 }

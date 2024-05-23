@@ -32,6 +32,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Kullanıcı</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Car" asp-action="CarList">Arabalar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Rent" asp-action="Index">Rent</a>
+                        </li>
 
                         @if (User.Identity.IsAuthenticated)
                         {

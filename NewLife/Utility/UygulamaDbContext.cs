@@ -11,5 +11,7 @@ namespace NewLife.Utility
         public DbSet<Car> Car { get; set; }
 
         public DbSet<User> User { get; set; }
+        public DbSet<Rent> Rent { get; set; }
+
     }
 }

@@ -17,7 +17,7 @@ namespace NewLife.Models
         [Required]
         public string User_Phone { get; set;}
 
-        public string? User_Type { get; set; }
+        public string? User_Type { get; set; } = "Standart";
         public string? User_Adress { get; set; }
 
     }

@@ -1,0 +1,22 @@
+﻿@model Car
+
+<div class="card mb-12" style="max-width: 100%;">
+    <div class="row">
+        <div class="col-md-8 col-sm-12">
+            <img src="@Model.CarImgUrl" class="img-fluid rounded-start" alt="@Model.Car_Name">
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="row card-body">
+                <div class="col-md-12 col-sm-12">
+
+                    <h5 class="card-title">@Model.Car_Name</h5>
+                    <p class="card-text"><small class="text-body-secondary">Car Brand @Model.Car_Price</small></p>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <h5 class="card-text">@Model.Car_Km</h5>
+                    <p class="card-text">@Model.Car_About</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

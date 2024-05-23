@@ -104,5 +104,19 @@ namespace NewLife.Controllers
             TempData["Succeed"] = "Car remove successfully";
             return RedirectToAction("Index");
         }
+        public IActionResult CarList()
+        {
+            var car = _carRepository.GetAll();
+            return View(car);
+        }
+        public IActionResult Details(int id)
+        {
+            var car = _carRepository.Get(c => c.Id == id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return View(car);
+        }
     }
 }

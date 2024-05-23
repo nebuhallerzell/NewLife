@@ -1,4 +1,5 @@
-﻿using NewLife.Utility;
+﻿using Microsoft.EntityFrameworkCore;
+using NewLife.Utility;
 
 namespace NewLife.Models
 {
@@ -18,6 +19,10 @@ namespace NewLife.Models
         public void Update(Car car)
         {
             _uygulamaDbContext.Update(car);
+        }
+        public IEnumerable<Car> GetAll()
+        {
+            return _uygulamaDbContext.Car.ToList();
         }
     }
 }

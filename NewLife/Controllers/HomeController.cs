@@ -13,7 +13,6 @@ namespace NewLife.Controllers
         {
             _logger = logger;
         }
-        [Authorize(Policy ="UserPolicy")]
         public IActionResult Index()
         {
             return View();
