@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NewLife.Models;
+using NewLife.Repositories;
 using NewLife.Utility;
 
 var builder = WebApplication.CreateBuilder(args);

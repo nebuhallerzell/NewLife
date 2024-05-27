@@ -1,51 +1,52 @@
-﻿using System.Collections.Generic;
+﻿
 using Microsoft.EntityFrameworkCore;
+using NewLife.Models;
 using NewLife.Utility;
 
-namespace NewLife.Models
-{
-    public class RentRepository : IRentRepository
-    {
-        private readonly UygulamaDbContext _uygulamaDbContext;
 
-        public RentRepository(UygulamaDbContext uygulamaDbContext)
+namespace NewLife.Repositories
+{
+    public class RentRepository : Repository<Rent>, IRentRepository
+    {
+        private readonly UygulamaDbContext _context;
+
+        public RentRepository(UygulamaDbContext context) : base(context)
         {
-            _uygulamaDbContext = uygulamaDbContext;
+            _context = context;
         }
 
         public IEnumerable<Rent> GetAll()
         {
-            return _uygulamaDbContext.Rent.Include(r => r.Car).Include(r => r.User).ToList();
-        }
-
-        public Rent Get(int id)
-        {
-            return _uygulamaDbContext.Rent.Find(id);
+            return _context.Rent.ToList();
         }
 
         public void Add(Rent rent)
         {
-            _uygulamaDbContext.Rent.Add(rent);
-        }
-
-        public void Update(Rent rent)
-        {
-            _uygulamaDbContext.Rent.Update(rent);
+            _context.Rent.Add(rent);
         }
 
         public void Save()
         {
-            _uygulamaDbContext.SaveChanges();
+            _context.SaveChanges();
         }
 
-        public IEnumerable<Rent> GetAll(string includeProps)
+        public object GetAllRents()
+        {
+            return _context.Rent.Include(x => x.User).Include(x => x.Car).ToList();
+        }
+        public string GetById(int value, string includeProperties) 
         {
             throw new NotImplementedException();
         }
 
-        public Rent? Get(Func<object, bool> value)
+        public object GetAll(int value, string includeProperties)
         {
             throw new NotImplementedException();
+        }
+
+        public void Update(Rent rent)
+        {
+            _context.Update(rent);
         }
     }
 }

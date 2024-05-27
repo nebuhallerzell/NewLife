@@ -12,6 +12,7 @@ namespace NewLife.Models
         {
             _uygulamaDbContext = uygulamaDbContext;
             this.dbSet = _uygulamaDbContext.Set<T>();
+            _uygulamaDbContext.Car.Include(k => k.Car_Name).Include(k => k.Id);
         }
         public void Add(T entity)
         {
@@ -28,10 +29,24 @@ namespace NewLife.Models
             dbSet.RemoveRange(entities);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProps = null)
+        public IEnumerable<T> GetAll(string? includeProps = null, string includeProperties = null)
+        {
+
+            IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProps))
+            {
+                foreach (var includeProp in includeProps.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.ToList();
+        }
+
+        public T Get(Expression<Func<T, bool>> filtre, string? includeProps = null, string includeProperties = null)
         {
             IQueryable<T> query = dbSet;
-            query = query.Where(filter);
+            query = query.Where(filtre);
             if (!string.IsNullOrEmpty(includeProps))
             {
                 foreach (var includeProp in includeProps.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -40,20 +55,6 @@ namespace NewLife.Models
                 }
             }
             return query.FirstOrDefault();
-        }
-
-        public IEnumerable<T> GetAll(string? includeProps = null)
-        {
-
-            IQueryable<T> query = dbSet;
-            if(!string.IsNullOrEmpty(includeProps))
-            {
-                foreach(var includeProp in includeProps.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return query.ToList();
         }
     }
 }

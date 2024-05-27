@@ -6,14 +6,27 @@
             <img src="@Model.CarImgUrl" class="img-fluid rounded-start" alt="@Model.Car_Name">
         </div>
         <div class="col-md-4">
-            <div class="card-body">
-                <ul>
-                    <li><h5 class="card-title">@Model.Car_Name</h5></li>
-                    <li><p class="card-text"><small class="text-body-secondary">Car Brand @Model.Car_Price</small></p></li>
-                    <li><h5 class="card-text">@Model.Car_Km</h5></li>
-                    <li><p class="card-text">@Model.Car_About</p></li>
-                </ul>
+            <div class="row card-body">
+                <div class="col-md-12 d-flex justify-content-between">
+                    <h3 class="card-title">@Model.Car_Name</h3>
+                    <h3 class="card-text">@Model.Car_Price TL</h3>
+                </div>
+                <hr class="my-2"/>
+                <div class="col-md-12">
+                    <h4>Araba Hakkında</h4>
+                    <p class="card-text">@Model.Car_About</p>
+                </div>
+                <div class="col-md-12">
+
+                <h5 class="card-text">@Model.Car_Km</h5>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
+<div class="card-image-overlay m-auto">
+    <span class="card-detail-badge">Used</span>
+    <span class="card-detail-badge">$28,000.00</span>
+    <span class="card-detail-badge">13000 Kms</span>
 </div>

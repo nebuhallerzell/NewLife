@@ -24,5 +24,9 @@ namespace NewLife.Models
         {
             return _uygulamaDbContext.Car.ToList();
         }
+        public IEnumerable<string> GetAllCarNames()
+        {
+            return _uygulamaDbContext.Car.Select(c => c.Car_Name).ToList();
+        }
     }
 }

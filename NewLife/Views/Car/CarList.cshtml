@@ -1,18 +1,23 @@
-﻿@model IEnumerable<Car>
-
+﻿@model List<Car>
 @if (Model != null)
 {
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-4 g-3">
         @foreach (var car in Model)
         {
             <div class="col">
-                <div class="card">
-                    <a asp-controller="Car" asp-action="Details" asp-route-id="@car.Id">
-                        <img src="@car.CarImgUrl" class="card-img-top" alt="@car.Car_Name" />
-                        <div class="card-body">
-                            <h5 class="card-title">@car.Car_Name</h5>
+                <div class="card border-danger mb-3">
+                    <img src="@car.CarImgUrl" class="card-img-top car-image" alt="@car.Car_Name" />
+                    <div class="card-body">
+                        <div class="col-md-12 d-flex justify-content-between">
+                            <h4 class="card-text">@car.Car_Name</h4>
+                            <h4 class="card-text">@car.Car_Price TL</h4>
                         </div>
-                    </a>
+                        <div class="col-md-12 d-flex justify-content-between">
+                            <p class="card-text">@car.Car_Km KM</p>
+                            <p class="card-text">@car.Car_About</p>
+                        </div>
+                        <center><a asp-controller="Rent" asp-route-carId="@car.Id" asp-action="UserRent" class="btn btn-danger">Rent</a></center>
+                    </div>
                 </div>
             </div>
         }

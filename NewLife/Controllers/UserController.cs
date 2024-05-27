@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NewLife.Models;
 using NewLife.Utility;
 using System.Security.Claims;
@@ -40,7 +41,7 @@ namespace NewLife.Controllers
             return View(user);
         }
 
-        [Authorize(Policy ="AdminPolicy")]
+        [Authorize(Policy = "AdminPolicy")]
         public IActionResult Index()
         {
             var userMail = HttpContext.User.FindFirst("userMail").Value.ToString();
@@ -95,7 +96,9 @@ namespace NewLife.Controllers
                     {
                         new Claim("userMail",user.User_Email),
                         new Claim("userId",user.Id.ToString()),
-                        new Claim("type",user.User_Type)
+                        new Claim("type",user.User_Type),
+                        new Claim(ClaimTypes.Name, user.User_Name) // Kullanıcı adını ekle
+
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
@@ -108,7 +111,9 @@ namespace NewLife.Controllers
                     {
                         new Claim("userMail",user.User_Email),
                         new Claim("userId",user.Id.ToString()),
-                        new Claim("type",user.User_Type)
+                        new Claim("type",user.User_Type),
+                        new Claim(ClaimTypes.Name, user.User_Name) // Kullanıcı adını ekle
+
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
@@ -126,7 +131,7 @@ namespace NewLife.Controllers
 
         public IActionResult AddUpdate(int? id)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (id == null || id == 0)
             {
                 return View();
@@ -147,7 +152,6 @@ namespace NewLife.Controllers
         [HttpPost]
         public IActionResult AddUpdate(User user)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 if (user.Id == 0)
@@ -157,27 +161,47 @@ namespace NewLife.Controllers
                 }
                 else
                 {
-                    User? userDb = _userRepository.Get(u => u.Id == user.Id);
-                    if (userDb == null)
+                    var existingUser = _userRepository.Get(u => u.Id == user.Id);
+                    if (existingUser == null)
                     {
                         return NotFound();
                     }
 
-                    userDb.User_Name = user.User_Name;
-                    userDb.User_Email = user.User_Email;
-                    userDb.User_Surname = user.User_Surname;
-                    userDb.User_Password = user.User_Password;
-                    userDb.User_Phone = user.User_Phone;
-                    user.User_Adress = user.User_Adress;    
+                    existingUser.User_Name = user.User_Name;
+                    existingUser.User_Surname = user.User_Surname;
+                    existingUser.User_Email = user.User_Email;
+                    // Diğer güncellenmesi gereken alanları buraya ekleyebilirsiniz
 
-                    _userRepository.Update(userDb);
+                    _userRepository.Update(existingUser);
                     TempData["Succeed"] = "User updated successfully";
                 }
+
                 _userRepository.Save();
                 return RedirectToAction("Index", "User");
             }
+
+            // Model doğrulama hatası varsa, formu tekrar göster
             return View(user);
         }
+
+
+        public IActionResult Profile()
+        {
+            var userId = HttpContext.User.FindFirst("userId")?.Value;
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var user = _userRepository.Get(u => u.Id == Convert.ToInt32(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
 
     }
 }

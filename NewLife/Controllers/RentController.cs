@@ -1,90 +1,140 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NewLife.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using NewLife.Utility;
-using System.Diagnostics;
+using NewLife.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NewLife.Controllers
 {
     public class RentController : Controller
     {
         private readonly IRentRepository _rentRepository;
-        private readonly IUserRepository _userRepository;
         private readonly ICarRepository _carRepository;
+        private readonly IUserRepository _userRepository;
 
-        public RentController(IRentRepository rentRepository, IUserRepository userRepository, ICarRepository carRepository)
+        public RentController(IRentRepository rentRepository, ICarRepository carRepository, IUserRepository userRepository)
         {
             _rentRepository = rentRepository;
-            _userRepository = userRepository;
             _carRepository = carRepository;
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
         {
-            var rents = _rentRepository.GetAll(includeProps: "Car").ToList();
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-            IEnumerable<SelectListItem> CarList = _carRepository.GetAll()
-                .Select(b => new SelectListItem
-                {
-                    Text = b.Car_Name,
-                    Value = b.Id.ToString()
-                }
-                ); //araba marka adını çekebilmek için kullandım
-            ViewBag.CarList = CarList;
+            var rents = _rentRepository.GetAllRents();
+            return View(rents);
+        }
+        private void SetViewBags()
+        {
+            ViewBag.CarsList = _carRepository.GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Car_Name,
+                Value = c.Id.ToString()
+            }).ToList();
 
-
-            //List<Car> objCarList = _carRepository.GetAll().ToList();
-            List<Rent> objRentList = _rentRepository.GetAll(includeProps: "Car").ToList();
-            return View(objRentList);
+            ViewBag.UsersList = _userRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = $"{u.User_Name} {u.User_Surname}",
+                Value = u.Id.ToString()
+            }).ToList();
         }
 
-        public IActionResult AddUpdate(int? id)
+        public IActionResult Rent(int? id)
         {
-            IEnumerable<SelectListItem> CarList = _carRepository.GetAll().Select(k => new SelectListItem
-            {
-                Text = k.Car_Name,
-                Value = k.Id.ToString()
-            }
-           );
-            ViewBag.CarList = CarList;
+            SetViewBags();
 
-            if (id == null || id == 0) //ekleme
+            if (id==null || id == 0)
             {
-                return View();
+                return View(new Rent());
             }
-            else //guncelleme
+            else
             {
-                Rent? rentDb = _rentRepository.Get(u => u.id == id); 
+                Rent rentDb = _rentRepository.Get(r=>r.Id==id);
+                if(rentDb == null)
                 {
                     return NotFound();
                 }
                 return View(rentDb);
             }
-
         }
+
         [HttpPost]
-        public IActionResult AddUpdate(Rent rent)
+        public IActionResult Rent(Rent rent)
         {
             if (ModelState.IsValid)
             {
-                if (rent.Id == 0)
+                if(rent.Id == 0)
                 {
                     _rentRepository.Add(rent);
-                    TempData["basarili"] = "The add process was successfully performed";
+
                 }
                 else
                 {
                     _rentRepository.Update(rent);
-                    TempData["basarili"] = " The update process was successfully performed";
 
                 }
-
-                _rentRepository.Save();  
-                return RedirectToAction("Index", "Rent");
+                _rentRepository.Save();
+                return RedirectToAction("Index");
             }
-            return View();
+            SetViewBags();
+
+            return View(rent);
+
+        }
+        public IActionResult UserRent(int? id, int? carId)
+        {
+            SetViewBags();
+
+            if (id == null || id == 0)
+            {
+                Rent newRent = new Rent();
+
+                if (carId != null)
+                {
+                    var car = _carRepository.Get(c => c.Id == carId);
+                    if (car != null)
+                    {
+                        newRent.CarId = car.Id;
+                        newRent.Car = car;
+                    }
+                }
+
+                var user = _userRepository.Get(u => u.User_Name == User.Identity.Name);
+                if (user != null)
+                {
+                    newRent.UserId = user.Id;
+                    newRent.User = user;
+                }
+
+                return View(newRent);
+            }
+            else
+            {
+                Rent rentDb = _rentRepository.Get(r => r.Id == id);
+                if (rentDb == null)
+                {
+                    return NotFound();
+                }
+                return View(rentDb);
+            }
+        }
+
+        [HttpPost, ActionName("UserRent")]
+        public IActionResult UserRentPost(Rent rent)
+        {
+
+            if (rent.Id == 0)
+            {
+                _rentRepository.Add(rent);
+            }
+            else
+            {
+                _rentRepository.Update(rent);
+            }
+
+            _rentRepository.Save();
+            TempData["basarili"] = "Kayıt işlemi başarıyla gerçekleştirildi";
+            return RedirectToAction("Index");
         }
 
     }

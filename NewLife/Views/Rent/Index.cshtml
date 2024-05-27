@@ -1,23 +1,26 @@
 ﻿@model IEnumerable<NewLife.Models.Rent>
 
 @{
-    ViewBag.Title = "Rent Listesi";
+    ViewData["Title"] = "Rent Index";
 }
 
-<h2>@ViewBag.Title</h2>
-
-<p>
-    <a asp-action="AddUpdate" class="btn btn-primary">Yeni Kayıt Ekle</a>
-</p>
+<h2>Rent Index</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Rent Time</th>
-            <th>Back Time</th>
-            <th>Car</th>
-            <th>User</th>
+            <th>
+                Car Name
+            </th>
+            <th>
+                User Name
+            </th>
+            <th>
+                Rent Date
+            </th>
+            <th>
+                Return Date
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,15 +28,25 @@
         @foreach (var rent in Model)
         {
             <tr>
-                <td>@rent.Id</td>
-                <td>@rent.Rent_Time</td>
-                <td>@rent.Back_Time</td>
-                <td>@rent.Car?.Car_Name</td>
-                <td>@rent.User?.User_Name</td>
                 <td>
-                    <a asp-action="AddUpdate" asp-route-id="@rent.Id" class="btn btn-primary">Düzenle</a>
+                    @rent.Car.Car_Name
+                </td>
+                <td>
+                    @rent.User.User_Name @rent.User.User_Surname
+                </td>
+                <td>
+                    @rent.Rent_Time.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @rent.Back_Time.ToString("dd/MM/yyyy")
+                </td>
+             
+                <td>
+                    <a asp-action="Rent" asp-route-id="@rent.Id" class="btn btn-primary">Edit</a>
                 </td>
             </tr>
         }
+        <a asp-action="Rent" class="btn btn-primary">Add New</a>
+
     </tbody>
 </table>

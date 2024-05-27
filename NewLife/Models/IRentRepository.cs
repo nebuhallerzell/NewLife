@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using NewLife.Models;
 
-namespace NewLife.Models
+namespace NewLife.Repositories
 {
-    public interface IRentRepository
+    public interface IRentRepository : IRepository<Rent>
     {
-        IEnumerable<Rent> GetAll(string includeProps);
-        Rent Get(int id);
-        void Add(Rent rent);
-        void Update(Rent rent);
+       object GetAll(int value,string includeProperties);
+        string? GetById(int value, string includeProperties);
+        object GetAllRents();
+
         void Save();
-        Rent? Get(Func<object, bool> value);
+        void Update(Rent rent);
+
+        
     }
 }
