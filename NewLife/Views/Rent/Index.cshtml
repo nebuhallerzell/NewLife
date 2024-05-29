@@ -4,7 +4,7 @@
     ViewData["Title"] = "Rent Index";
 }
 
-<h2>Rent Index</h2>
+<h2>Rent Table Index</h2>
 
 <table class="table">
     <thead>
@@ -21,7 +21,12 @@
             <th>
                 Return Date
             </th>
+            <th>
+               Rent Price
+            </th>
             <th></th>
+            <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -40,9 +45,16 @@
                 <td>
                     @rent.Back_Time.ToString("dd/MM/yyyy")
                 </td>
-             
+                <td>
+                    @rent.Rent_Price
+                </td>
+
                 <td>
                     <a asp-action="Rent" asp-route-id="@rent.Id" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@rent.Id" class="btn btn-danger">Delete</a>
+
                 </td>
             </tr>
         }

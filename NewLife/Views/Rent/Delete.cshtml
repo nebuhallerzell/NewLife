@@ -1,30 +1,19 @@
-﻿@model Car
+﻿@model Rent
 @if (TempData["Succeed"] != null)
 {
     <h2>@TempData["Succeed"]</h2>
 }
 <form method="post">
     <input asp-for="Id" hidden />
-    <div class="border p-3 mt-5">
-
-        <div class="row pb-3">
-            <h1 class="text-warning">Delete Car</h1><hr />
+    <div class="card text-center">
+        <div class="card-header">
+            Rent Delete
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Car_Name">Car Model</label>
-            <input asp-for="Car_Name" disabled type="text" class="form-control" />
+        <div class="card-body">
+            <h5 class="card-title">Bu Kiralama Silincektir.</h5>
+            <p class="card-text">Bu Kiralama Silincektir. Bu İşlem Geri Alınamaz</p>
+            <button type="submit" class="btn btn-outline-warning">Delete Car</button>
+            <a asp-controller="Rent" asp-action="Index" class="btn btn-outline-warning">Back</a>
         </div>
-        <div class="mb-3">
-            <label asp-for="Car_About">About Car</label>
-            <input asp-for="Car_About" disabled type="text" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label asp-for="Car_Price">Car Price</label>
-            <input asp-for="Car_Price" disabled type="text" class="form-control" />
-        </div>
-
-        <button type="submit" class="btn btn-outline-warning">Delete Car</button>
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-warning">Back</a>
     </div>
 </form>

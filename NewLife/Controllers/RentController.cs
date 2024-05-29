@@ -19,11 +19,13 @@ namespace NewLife.Controllers
             _userRepository = userRepository;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var rents = _rentRepository.GetAllRents();
             return View(rents);
         }
+
         private void SetViewBags()
         {
             ViewBag.CarsList = _carRepository.GetAll().Select(c => new SelectListItem
@@ -43,70 +45,9 @@ namespace NewLife.Controllers
         {
             SetViewBags();
 
-            if (id==null || id == 0)
-            {
-                return View(new Rent());
-            }
-            else
-            {
-                Rent rentDb = _rentRepository.Get(r=>r.Id==id);
-                if(rentDb == null)
-                {
-                    return NotFound();
-                }
-                return View(rentDb);
-            }
-        }
-
-        [HttpPost]
-        public IActionResult Rent(Rent rent)
-        {
-            if (ModelState.IsValid)
-            {
-                if(rent.Id == 0)
-                {
-                    _rentRepository.Add(rent);
-
-                }
-                else
-                {
-                    _rentRepository.Update(rent);
-
-                }
-                _rentRepository.Save();
-                return RedirectToAction("Index");
-            }
-            SetViewBags();
-
-            return View(rent);
-
-        }
-        public IActionResult UserRent(int? id, int? carId)
-        {
-            SetViewBags();
-
             if (id == null || id == 0)
             {
-                Rent newRent = new Rent();
-
-                if (carId != null)
-                {
-                    var car = _carRepository.Get(c => c.Id == carId);
-                    if (car != null)
-                    {
-                        newRent.CarId = car.Id;
-                        newRent.Car = car;
-                    }
-                }
-
-                var user = _userRepository.Get(u => u.User_Name == User.Identity.Name);
-                if (user != null)
-                {
-                    newRent.UserId = user.Id;
-                    newRent.User = user;
-                }
-
-                return View(newRent);
+                return View(new Rent());
             }
             else
             {
@@ -119,21 +60,117 @@ namespace NewLife.Controllers
             }
         }
 
-        [HttpPost, ActionName("UserRent")]
-        public IActionResult UserRentPost(Rent rent)
+        [HttpPost]
+        public IActionResult Rent(Rent rent)
         {
-
-            if (rent.Id == 0)
+            if (ModelState.IsValid)
             {
-                _rentRepository.Add(rent);
+                if (rent.Id == 0)
+                {
+                    _rentRepository.Add(rent);
+                }
+                else
+                {
+                    _rentRepository.Update(rent);
+                }
+                _rentRepository.Save();
+                return RedirectToAction("Index");
+            }
+            SetViewBags();
+            return View(rent);
+        }
+
+        [Authorize]
+        public IActionResult UserRent(int? id, int? carId)
+        {
+            Rent newRent = new Rent();
+            if (id == null || id == 0)
+            {
+                if (carId != null)
+                {
+                    var car = _carRepository.Get(c => c.Id == carId);
+                    if (car != null)
+                    {
+                        newRent.CarId = car.Id;
+                        newRent.Car = car;
+
+                    }
+                }
+
+                var user = _userRepository.Get(u => u.User_Name == User.Identity.Name);
+                if (user != null)
+                {
+                    newRent.UserId = user.Id;
+                    newRent.User = user;
+                }
             }
             else
             {
-                _rentRepository.Update(rent);
+                newRent = _rentRepository.Get(r => r.Id == id);
+                if (newRent == null)
+                {
+                    return NotFound();
+                }
             }
+            ViewBag.CarName = newRent.Car?.Car_Name;
+            ViewBag.UserName = $"{newRent.User?.User_Name} {newRent.User?.User_Surname}";
+            return View(newRent);
+        }
 
+
+        [Authorize]
+        [HttpPost, ActionName("UserRent")]
+        public IActionResult UserRentPost(Rent rent)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingCar = _carRepository.Get(c => c.Id == rent.CarId);
+                double carPrice = existingCar != null ? existingCar.Car_Price : 0;
+                rent.CalculateRentPrice(carPrice);
+
+                if (rent.Id == 0)
+                {
+                    _rentRepository.Add(rent);
+                }
+                else
+                {
+                    _rentRepository.Update(rent);
+                }
+
+                _rentRepository.Save();
+                TempData["basarili"] = "Kayıt işlemi başarıyla gerçekleştirildi";
+                return RedirectToAction("Index");
+            }
+            return View(rent);
+        }
+
+
+        [Authorize]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Rent rentDb = _rentRepository.Get(u => u.Id == id);
+            if (rentDb == null)
+            {
+                return NotFound();
+            }
+            return View(rentDb);
+        }
+        [Authorize]
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Rent? rent = _rentRepository.Get(u => u.Id == id);
+            if (rent == null)
+            {
+                return NotFound();
+            }
+            _rentRepository.Delete(rent);
             _rentRepository.Save();
-            TempData["basarili"] = "Kayıt işlemi başarıyla gerçekleştirildi";
+            TempData["Succeed"] = "User removed successfully";
             return RedirectToAction("Index");
         }
 

@@ -1,42 +1,36 @@
-﻿@model Rent
+﻿@model NewLife.Models.Rent
 
 @{
-    ViewData["Title"] = "User Rent";
+    ViewData["Title"] = "Kiralama Formu";
 }
+@if (User.Claims.FirstOrDefault(c => c.Type == "type")?.Value == "Admin")
+{
+    <h2>Kiralama Formu</h2>
 
-<h2>User Rent</h2>
+    <form asp-action="UserRent" method="post">
 
-<form asp-action="UserRent" method="post">
-    <input asp-for="User.User_Email" hidden />
-    <input asp-for="User.User_Password" hidden />
-    <input asp-for="User.User_Phone" hidden />
-
-
-
-    <div class="form-group">
-        <label asp-for="Rent_Time" class="control-label"></label>
-        <input asp-for="Rent_Time" class="form-control" />
-        <span asp-validation-for="Rent_Time" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Back_Time" class="control-label"></label>
-        <input asp-for="Back_Time" class="form-control" />
-        <span asp-validation-for="Back_Time" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Car.Car_Name" class="control-label"></label>
-        <input asp-for="Car.Car_Name" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="User.User_Name" class="control-label"></label>
-        <input asp-for="User.User_Name" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="User.User_Surname" class="control-label"></label>
-        <input asp-for="User.User_Surname" class="form-control" readonly />
-    </div>
-    <!-- Diğer alanlar -->
-    <div class="form-group">
-        <input type="submit" value="Kaydet" class="btn btn-primary" />
-    </div>
-</form>
+        <div class="form-group">
+            <label asp-for="Rent_Time" class="control-label">Başlangıç</label>
+            <input asp-for="Rent_Time" type="date" class="form-control" />
+            <span asp-validation-for="Rent_Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Back_Time" class="control-label">Bitiş</label>
+            <input asp-for="Back_Time" type="date" class="form-control" />
+            <span asp-validation-for="Back_Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label">Kullanıcı</label>
+            <input type="text" class="form-control" value="@ViewBag.UserName" readonly />
+            <input asp-for="UserId" type="hidden" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CarId" class="control-label">Araç</label>
+            <input type="text" class="form-control" value="@ViewBag.CarName" readonly />
+            <input asp-for="CarId" type="hidden" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Kaydet" class="btn btn-primary" />
+        </div>
+    </form>
+}

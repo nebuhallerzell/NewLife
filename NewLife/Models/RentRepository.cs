@@ -48,5 +48,16 @@ namespace NewLife.Repositories
         {
             _context.Update(rent);
         }
+        //public object ArabaCek()
+        //{
+        //    return _context.Car.Include(r => r.Id).Include(r => r.Car_Name).ToList();
+
+        //}
+        //public object KullaniciCek()
+        //{
+        //    return _context.User.Include(r => r.Id).Include(r => r.User_Email).ToList();
+
+        //}
+
     }
 }

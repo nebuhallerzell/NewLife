@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewLife.Utility;
 
@@ -11,9 +12,11 @@ using NewLife.Utility;
 namespace NewLife.Migrations
 {
     [DbContext(typeof(UygulamaDbContext))]
-    partial class UygulamaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240529104552_AddRentPrice")]
+    partial class AddRentPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace NewLife.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Car", (string)null);
+                    b.ToTable("Car");
                 });
 
             modelBuilder.Entity("NewLife.Models.Rent", b =>
@@ -83,7 +86,7 @@ namespace NewLife.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Rent", (string)null);
+                    b.ToTable("Rent");
                 });
 
             modelBuilder.Entity("NewLife.Models.User", b =>
@@ -122,7 +125,7 @@ namespace NewLife.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("NewLife.Models.Rent", b =>

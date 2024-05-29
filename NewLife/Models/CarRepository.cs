@@ -28,5 +28,6 @@ namespace NewLife.Models
         {
             return _uygulamaDbContext.Car.Select(c => c.Car_Name).ToList();
         }
+
     }
 }

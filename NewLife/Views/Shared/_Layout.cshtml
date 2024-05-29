@@ -22,14 +22,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-start">
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Hakkımızda</a>
                         @if(User.Claims.FirstOrDefault(c=> c.Type == "type")?.Value == "Admin")
                         {
                         <a class="nav-link text-light" asp-area="" asp-controller="Car" asp-action="Index">Arabalar</a>
                         <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Index">Kullanıcı</a>
+                        <a class="nav-link text-light" asp-controller="Rent" asp-action="Index">Rent</a>
                         }
                         <a class="nav-link text-light" asp-controller="Car" asp-action="CarList">Arabalar</a>
-                        <a class="nav-link text-light" asp-controller="Rent" asp-action="Index">Rent</a>
                     </div>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                         @if (User.Identity.IsAuthenticated)

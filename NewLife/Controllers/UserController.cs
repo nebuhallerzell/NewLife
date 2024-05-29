@@ -63,7 +63,7 @@ namespace NewLife.Controllers
             }
             return View(userDb);
         }
-
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
@@ -129,6 +129,7 @@ namespace NewLife.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public IActionResult AddUpdate(int? id)
         {
             //var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -149,6 +150,7 @@ namespace NewLife.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddUpdate(User user)
         {
@@ -183,22 +185,14 @@ namespace NewLife.Controllers
             // Model doğrulama hatası varsa, formu tekrar göster
             return View(user);
         }
-
-
+        [Authorize]
         public IActionResult Profile()
         {
-            var userId = HttpContext.User.FindFirst("userId")?.Value;
-            if (userId == null)
-            {
-                return NotFound();
-            }
-
-            var user = _userRepository.Get(u => u.Id == Convert.ToInt32(userId));
+            var user = _userRepository.Get(u => u.User_Name == User.Identity.Name);
             if (user == null)
             {
                 return NotFound();
             }
-
             return View(user);
         }
 

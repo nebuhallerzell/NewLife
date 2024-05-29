@@ -10,6 +10,8 @@ namespace NewLife.Repositories
 
         void Save();
         void Update(Rent rent);
+        //object ArabaCek();
+        //object KullaniciCek();
 
         
     }
