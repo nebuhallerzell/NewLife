@@ -21,13 +21,11 @@ namespace NewLife.Controllers
             _uygulamaDbContext = uygulamaDbContext;
         }
 
-        // GET: Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("User_Name,User_Surname,User_Email,User_Password,User_Phone,User_Adress")] User user)
@@ -49,7 +47,6 @@ namespace NewLife.Controllers
             return View(objUserList);
         }
 
-        // GET: Users/Delete
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -75,54 +72,62 @@ namespace NewLife.Controllers
             _userRepository.Delete(user);
             _userRepository.Save();
             TempData["Succeed"] = "User removed successfully";
-            return RedirectToAction("Index");
+            if (user.User_Type == "Admin")
+            {
+                return RedirectToAction("Index", "User");
+            }
+            else
+            {
+                return RedirectToAction("Profile", "User");
+            }
         }
 
         public IActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public IActionResult Login(string userMail, string password)
         {
             if (ModelState.IsValid)
             {
-                var user = _userRepository.Get(u => u.User_Email == userMail && u.User_Password == password);
-                if (user.User_Type == "Admin")
-                {
-                    List<Claim> claims = new List<Claim>()
-                    {
-                        new Claim("userMail",user.User_Email),
-                        new Claim("userId",user.Id.ToString()),
-                        new Claim("type",user.User_Type),
-                        new Claim(ClaimTypes.Name, user.User_Name) // Kullanıcı adını ekle
+                var user = _userRepository.Get(u => u.User_Email == userMail);
 
-                    };
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                    HttpContext.SignInAsync(principal);
-                    return RedirectToAction("Index");
+                if (user == null)
+                {
+                    TempData["Error"] = "Kullanıcı Bulunamadı";
+                }
+                else if (user.User_Password != password)
+                {
+                    TempData["Error"] = "Şifre Yanlış";
                 }
                 else
                 {
                     List<Claim> claims = new List<Claim>()
-                    {
-                        new Claim("userMail",user.User_Email),
-                        new Claim("userId",user.Id.ToString()),
-                        new Claim("type",user.User_Type),
-                        new Claim(ClaimTypes.Name, user.User_Name) // Kullanıcı adını ekle
+            {
+                new Claim("userMail", user.User_Email),
+                new Claim("userId", user.Id.ToString()),
+                new Claim("type", user.User_Type),
+                new Claim(ClaimTypes.Name, user.User_Name)
+            };
 
-                    };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                     HttpContext.SignInAsync(principal);
-                    return RedirectToAction("Index", "Home");
+
+                    if (user.User_Type == "Admin")
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
             return View();
         }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
@@ -172,17 +177,23 @@ namespace NewLife.Controllers
                     existingUser.User_Name = user.User_Name;
                     existingUser.User_Surname = user.User_Surname;
                     existingUser.User_Email = user.User_Email;
-                    // Diğer güncellenmesi gereken alanları buraya ekleyebilirsiniz
+                    existingUser.User_Password = user.User_Password;
+                    existingUser.User_Phone = user.User_Phone;
 
                     _userRepository.Update(existingUser);
                     TempData["Succeed"] = "User updated successfully";
                 }
 
                 _userRepository.Save();
-                return RedirectToAction("Index", "User");
+                if (user.User_Type == "Admin")
+                {
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    return RedirectToAction("Profile", "User");
+                }
             }
-
-            // Model doğrulama hatası varsa, formu tekrar göster
             return View(user);
         }
         [Authorize]

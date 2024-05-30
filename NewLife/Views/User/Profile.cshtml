@@ -32,6 +32,8 @@
                                     <h6>Address</h6>
                                     <p class="text-muted">@Model.User_Adress</p>
                                 </div>
+                                <td><a asp-controller="User" asp-route-id="@Model.Id" asp-action="Delete" class="btn btn-danger">DELETE</a></td>
+                                <td><a asp-controller="User" asp-route-id="@Model.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a></td>
                             </div>
                         </div>
                     </div>

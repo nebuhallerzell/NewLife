@@ -1,4 +1,7 @@
 ﻿@model Car
+@{
+    ViewData["Title"] = "Araç Silme";
+}
 @if (TempData["Succeed"] != null)
 {
     <h2>@TempData["Succeed"]</h2>
@@ -8,23 +11,23 @@
     <div class="border p-3 mt-5">
 
         <div class="row pb-3">
-            <h1 class="text-warning">Delete Car</h1><hr />
+            <h1 class="text-warning">Silme Formu</h1><hr />
         </div>
 
         <div class="mb-3">
-            <label asp-for="Car_Name">Car Model</label>
+            <label asp-for="Car_Name">Aracın İsmi</label>
             <input asp-for="Car_Name" disabled type="text" class="form-control" />
         </div>
         <div class="mb-3">
-            <label asp-for="Car_About">About Car</label>
+            <label asp-for="Car_About">Vites Modeli</label>
             <input asp-for="Car_About" disabled type="text" class="form-control" />
         </div>
         <div class="mb-3">
-            <label asp-for="Car_Price">Car Price</label>
+            <label asp-for="Car_Price">Aracın Fiyatı</label>
             <input asp-for="Car_Price" disabled type="text" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-outline-warning">Delete Car</button>
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-warning">Back</a>
+        <button type="submit" class="btn btn-outline-warning">Sil</button>
+        <a asp-controller="Car" asp-action="Index" class="btn btn-outline-warning">Geri</a>
     </div>
 </form>

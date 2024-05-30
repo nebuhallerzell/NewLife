@@ -1,48 +1,56 @@
 ﻿ @model User
+ @using System.Security.Claims
 
 <form method="post">
     <div class="row">
         <div class="border p-3 mt-5">
             <div class="row pb-3">
 
-                <h1 class="text-warning">@(Model == null ? "Add User" : "Update User")</h1><hr />
+                <h1 class="text-warning">@(Model == null ? "Kullanıcı Ekle" : "Kullanıcı Güncelle")</h1><hr />
             </div>
 
             <div class="mb-3">
-                <label asp-for="User_Name">User Name</label>
+                <label asp-for="User_Name">İsim</label>
                 <input asp-for="User_Name" type="text" class="form-control" />
                 <span asp-validation-for="User_Name" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="User_Surname">User Surname</label>
+                <label asp-for="User_Surname">Soyisim</label>
                 <input asp-for="User_Surname" type="text" class="form-control" />
                 <span asp-validation-for="User_Surname" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="User_Email">User Email</label>
+                <label asp-for="User_Email">E-POSTA</label>
                 <input asp-for="User_Email" type="email" class="form-control" />
                 <span asp-validation-for="User_Email" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="User_Password">User Password</label>
+                <label asp-for="User_Password">Şifre</label>
                 <input asp-for="User_Password" type="password" class="form-control" />
                 <span asp-validation-for="User_Password" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="User_Phone">User Phone</label>
+                <label asp-for="User_Phone">Telefon</label>
                 <input asp-for="User_Phone" type="text" class="form-control" />
                 <span asp-validation-for="User_Phone" class="text-danger"></span>
             </div>
 
             @if (Model != null)
             {
-                <button type="submit" class="btn btn-outline-warning">Update User</button>
+                <button type="submit" class="btn btn-outline-warning">Güncelle</button>
             }
             else
             {
-                <button type="submit" class="btn btn-outline-warning">Add User</button>
+                <button type="submit" class="btn btn-outline-warning">Ekle</button>
             }
-            <a asp-controller="User" asp-action="Index" class="btn btn-outline-warning">Back</a>
+            @if (User.Claims.FirstOrDefault(c => c.Type == "type")?.Value == "Admin")
+            {
+                <a asp-controller="User" asp-action="Index" class="btn btn-outline-warning">Geri</a>
+            }
+            else
+            {
+                <a asp-controller="User" asp-action="Profile" class="btn btn-outline-warning">Geri</a>
+            }
         </div>
     </div>
 </form>

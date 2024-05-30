@@ -1,5 +1,7 @@
 ﻿@model List<Car>
-
+@{
+    ViewData["Title"] = "Araçlar";
+}
 @if (TempData["Succeed"] != null)
 {
     <h2>@TempData["Succeed"]</h2>
@@ -7,15 +9,15 @@
 
 <div class="container">
     <div class="row pt-3 pb-4">
-        <h1>Cars</h1>
+        <h1>Arabalar</h1>
     </div>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Car Model</th>
-                <th>About Car</th>
-                <th>Car Km</th>
-                <th>Car Price</th>
+                <th>Araç Modeli</th>
+                <th>Vites Türü</th>
+                <th>Araç Km</th>
+                <th>Araç Fiyatı</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -29,10 +31,10 @@
                     <td>@car.Car_Km</td>
                     <td>@car.Car_Price</td>
                     <td>
-                        <a asp-controller="Car" asp-route-id="@car.Id" asp-action="Delete" class="btn btn-danger">DELETE</a>
+                        <a asp-controller="Car" asp-route-id="@car.Id" asp-action="Delete" class="btn btn-danger">Sil</a>
                     </td>
                     <td>
-                        <a asp-controller="Car" asp-route-id="@car.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a>
+                        <a asp-controller="Car" asp-route-id="@car.Id" asp-action="AddUpdate" class="btn btn-success">Güncelle</a>
                     </td>
                 </tr>
             }

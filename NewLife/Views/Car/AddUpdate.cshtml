@@ -6,43 +6,43 @@
             <div class="border p-3 mt-5">
                 <div class="row pb-3">
 
-                    <h1 class="text-warning">@(Model == null ? "Add Car" : "Update Car")</h1><hr />
+                    <h1 class="text-warning">@(Model == null ? "Araç Ekle" : "Araç Güncelle")</h1><hr />
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Car_Name">Car Model</label>
+                    <label asp-for="Car_Name">Araç Modeli</label>
                     <input asp-for="Car_Name" type="text" class="form-control" />
                     <span asp-validation-for="Car_Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Car_About">About Car </label>
+                    <label asp-for="Car_About">Vites Türü</label>
                     <input asp-for="Car_About" type="text" class="form-control" />
                     <span asp-validation-for="Car_About" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Car_Price">Car Price</label>
+                    <label asp-for="Car_Price">Araç Fiyatı</label>
                     <input asp-for="Car_Price" type="text" class="form-control" />
                     <span asp-validation-for="Car_Price" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Car_Km">Car Km</label>
+                    <label asp-for="Car_Km">Araç Km</label>
                     <input asp-for="Car_Km" type="text" class="form-control" />
                     <span asp-validation-for="Car_Km" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CarImgUrl">Car İmage</label>
+                    <label asp-for="CarImgUrl">Araç Fotoğrafı</label>
                     <input type="file" name="file" class="form-control" />
                 </div>
 
                 @if (Model != null)
                 {
-                    <button type="submit" class="btn btn-outline-warning">Update Car</button>
+                    <button type="submit" class="btn btn-outline-warning">Güncelle</button>
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-outline-warning">Add Car</button>
+                    <button type="submit" class="btn btn-outline-warning">Ekle</button>
                 }
-                <a asp-controller="Car" asp-action="Index" class="btn btn-outline-warning">Back</a>
+                <a asp-controller="Car" asp-action="Index" class="btn btn-outline-warning">Geri</a>
             </div>
         </div>
         <div class="col-2">

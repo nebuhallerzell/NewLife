@@ -1,25 +1,25 @@
 ﻿@model List<User>
 <div class="container">
     <div class="row pt-3 pb-4">
-        <h1>Users</h1>
+        <h1>Kullanıcılar</h1>
     </div>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>
-                    User NAME
+                    İsim
                 </th>
                 <th>
-                    User Surname
+                    Soyisim
                 </th>
                 <th>
-                    User Mail
+                   E-Posta
                 </th>
                 <th>
-                    User Number
+                   Telefon No
                 </th>
                 <th>
-                    User Type
+                    Adres
                 </th>
                 <th>
                 </th>
@@ -44,11 +44,11 @@
                         @user.User_Phone
                     </td>
                     <td>
-                        @user.User_Type
+                        @user.User_Adress
                     </td>
 
-                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger">DELETE</a></td>
-                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a></td>
+                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="Delete" class="btn btn-danger">Sil</a></td>
+                    <td><a asp-controller="User" asp-route-id="@user.Id" asp-action="AddUpdate" class="btn btn-success">Güncelle</a></td>
                 </tr>
             }
         </tbody>
@@ -56,7 +56,7 @@
     <div class="row pt-3 pb-2">
         <div>
             <a asp-controller="User" asp-action="AddUpdate" class="btn btn-warning" type="button">
-                Add New User
+                Yeni Kullanıcı Ekle
             </a>
         </div>
     </div>
