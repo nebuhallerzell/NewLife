@@ -1,29 +1,28 @@
 ﻿@model NewLife.Models.Rent
 
-<h2>Kiralama</h2>
+    <h2>Kiralama</h2>
 
-<form asp-action="Rent" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Rent_Time" class="control-label"></label>
-        <input asp-for="Rent_Time" class="form-control" />
-        <span asp-validation-for="Rent_Time" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Back_Time" class="control-label"></label>
-        <input asp-for="Back_Time" class="form-control" />
-        <span asp-validation-for="Back_Time" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="CarId" class="control-label">Araç</label>
-        <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarsList"></select>
-    </div>
-    <div class="form-group">
-        <label asp-for="UserId" class="control-label">Kullanıcı</label>
-        <select asp-for="UserId" class="form-control" asp-items="ViewBag.UsersList"></select>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Kaydet" class="btn btn-primary" />
-    </div>
-</form>
-
+    <form asp-action="Rent" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Rent_Time" class="control-label">Alış</label>
+            <input asp-for="Rent_Time" class="form-control" />
+            <span asp-validation-for="Rent_Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Back_Time" class="control-label">Teslim</label>
+            <input asp-for="Back_Time" class="form-control" />
+            <span asp-validation-for="Back_Time" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CarId" class="control-label">Araç</label>
+            <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarsList"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label">Kullanıcı</label>
+            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UsersList"></select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Kaydet" class="btn btn-primary" />
+        </div>
+    </form>

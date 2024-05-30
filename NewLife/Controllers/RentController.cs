@@ -74,6 +74,7 @@ namespace NewLife.Controllers
                     _rentRepository.Update(rent);
                 }
                 _rentRepository.Save();
+
                 return RedirectToAction("Index");
             }
             SetViewBags();
@@ -139,7 +140,7 @@ namespace NewLife.Controllers
 
                 _rentRepository.Save();
                 TempData["basarili"] = "Kayıt işlemi başarıyla gerçekleştirildi";
-                return RedirectToAction("Index");
+                return RedirectToAction("RentList");
             }
             return View(rent);
         }
@@ -173,6 +174,34 @@ namespace NewLife.Controllers
             TempData["Succeed"] = "User removed successfully";
             return RedirectToAction("Index");
         }
+        [Authorize]
+        public IActionResult RentList()
+        {
+            // Mevcut kullanıcının kimliğini alıyoruz.
+            var currentUserName = User.Identity.Name;
+
+            // Kullanıcı bilgilerini veritabanından alıyoruz.
+            var currentUser = _userRepository.Get(u => u.User_Name == currentUserName);
+
+            if (currentUser == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // GetAllRents() sonucunu IEnumerable<Rent> olarak alıyoruz.
+            var rentsObject = _rentRepository.GetAllRents();
+            if (rentsObject is IEnumerable<Rent> rents)
+            {
+                // Kullanıcının ID'siyle eşleşen rentleri çekiyoruz.
+                var userRents = rents.Where(r => r.UserId == currentUser.Id).ToList();
+                return View(userRents);
+            }
+            else
+            {
+                return NotFound("Kiralama bilgileri uygun formatta değil.");
+            }
+        }
+
 
     }
 }

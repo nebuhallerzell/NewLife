@@ -14,26 +14,32 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body p-4">
-                            <h6>Information</h6>
+                            <h6>Bilgiler</h6>
                             <hr class="mt-0 mb-4">
                             <div class="row pt-1">
                                 <div class="col-6 mb-3">
-                                    <h6>Email</h6>
+                                    <h6>E-Posta</h6>
                                     <p class="text-muted">@Model.User_Email</p>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <h6>Phone</h6>
+                                    <h6>Telefon</h6>
                                     <p class="text-muted">@Model.User_Phone</p>
                                 </div>
                             </div>
                             <hr class="mt-0 mb-4">
                             <div class="row pt-1">
                                 <div class="col-6 mb-3">
-                                    <h6>Address</h6>
+                                    <h6>Adres</h6>
                                     <p class="text-muted">@Model.User_Adress</p>
                                 </div>
-                                <td><a asp-controller="User" asp-route-id="@Model.Id" asp-action="Delete" class="btn btn-danger">DELETE</a></td>
-                                <td><a asp-controller="User" asp-route-id="@Model.Id" asp-action="AddUpdate" class="btn btn-success">UPDATE</a></td>
+                                <div class="col-6 mb-3">
+                                    <h5><a asp-controller="Rent" asp-action="RentList" class="text-danger text-decoration-none">Kiralamalarım</a></h5>
+                                </div>
+                                <div class="text-end">
+                                <td><a asp-controller="User" asp-route-id="@Model.Id" asp-action="Delete" class="btn btn-danger">Hesabı Sil</a>
+                                        <a asp-controller="User" asp-route-id="@Model.Id" asp-action="AddUpdate" class="btn btn-success">Güncelle</a>
+                                    </td>
+                                </div>
                             </div>
                         </div>
                     </div>

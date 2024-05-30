@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Kiralama Formu";
 }
-@if (User.Claims.FirstOrDefault(c => c.Type == "type")?.Value == "Admin")
-{
+
     <h2>Kiralama Formu</h2>
 
     <form asp-action="UserRent" method="post">
@@ -33,4 +32,3 @@
             <input type="submit" value="Kaydet" class="btn btn-primary" />
         </div>
     </form>
-}
