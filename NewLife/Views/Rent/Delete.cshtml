@@ -9,7 +9,15 @@
             <h5 class="card-title">Bu Kiralama Silincektir.</h5>
             <p class="card-text">Bu Kiralama Silincektir. Bu İşlem Geri Alınamaz</p>
             <button type="submit" class="btn btn-outline-warning">Sil</button>
-            <a asp-controller="Rent" asp-action="Index" class="btn btn-outline-warning">Geri</a>
+            @if (User.Claims.FirstOrDefault(c => c.Type == "type")?.Value == "Admin")
+{
+                <a asp-controller="Rent" asp-action="Index" class="btn btn-outline-warning">Geri</a>
+            }
+            else
+            {
+                <a asp-controller="Rent" asp-action="RentList" class="btn btn-outline-warning">Geri</a>
+
+            }
         </div>
     </div>
 </form>

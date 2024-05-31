@@ -75,7 +75,16 @@ namespace NewLife.Controllers
                 }
                 _rentRepository.Save();
 
-                return RedirectToAction("Index");
+                var currentUser = _userRepository.Get(u => u.User_Name == User.Identity.Name);
+
+                if (currentUser != null && currentUser.User_Type == "Admin")
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("RentList");
+                }
             }
             SetViewBags();
             return View(rent);
@@ -171,16 +180,21 @@ namespace NewLife.Controllers
             }
             _rentRepository.Delete(rent);
             _rentRepository.Save();
-            TempData["Succeed"] = "User removed successfully";
-            return RedirectToAction("Index");
+            var currentUser = _userRepository.Get(u => u.User_Name == User.Identity.Name);
+
+            if (currentUser != null && currentUser.User_Type == "Admin")
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("RentList");
+            }
         }
         [Authorize]
         public IActionResult RentList()
         {
-            // Mevcut kullanıcının kimliğini alıyoruz.
             var currentUserName = User.Identity.Name;
-
-            // Kullanıcı bilgilerini veritabanından alıyoruz.
             var currentUser = _userRepository.Get(u => u.User_Name == currentUserName);
 
             if (currentUser == null)
@@ -188,11 +202,9 @@ namespace NewLife.Controllers
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
-            // GetAllRents() sonucunu IEnumerable<Rent> olarak alıyoruz.
             var rentsObject = _rentRepository.GetAllRents();
             if (rentsObject is IEnumerable<Rent> rents)
             {
-                // Kullanıcının ID'siyle eşleşen rentleri çekiyoruz.
                 var userRents = rents.Where(r => r.UserId == currentUser.Id).ToList();
                 return View(userRents);
             }
